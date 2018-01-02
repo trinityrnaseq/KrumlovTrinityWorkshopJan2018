@@ -1,2 +1,1 @@
-# KrumlovTrinityWorkshopJan2018
-Trinity RNA-Seq workshop in Krumlov 2018
+Click the 'wiki' link for all workshop instructions
