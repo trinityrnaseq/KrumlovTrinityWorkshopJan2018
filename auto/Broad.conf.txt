@@ -12,14 +12,14 @@
 TRANSDECODER_DIR=/home/unix/bhaas/GITHUB/TransDecoder
 BLASTX_PROG=blastx
 BLASTP_PROG=blastp
-SIGNALP_PROG=/seq/regev_genome_portal/SOFTWARE/SIGNALP/signalp-4.0/signalp
+SIGNALP_PROG=/seq/RNASEQ/TOOLS/SIGNALP/signalp-4.1/signalp
 TMHMM_PROG=/seq/regev_genome_portal/SOFTWARE/TMHMM/TMHMM2.0c/bin/tmhmm
 
 
 # dbs
 SWISSPROT_PEP=../data/mini_sprot.pep
-PFAM_DB=/seq/RNASEQ/DBs/PFAM/current/Pfam-A.hmm
-TRINOTATE_BOILERPLATE=../data/Trinotate.sprot_uniref90.20150131.boilerplate.sqlite
+PFAM_DB=../../trinotate_data/Pfam-A.hmm
+TRINOTATE_BOILERPLATE=../../trinotate_data/Trinotate.boilerplate.sqlite
 
 
 ####################
