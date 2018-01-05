@@ -12,7 +12,6 @@ use IniReader;
 
 use Getopt::Long qw(:config no_ignore_case bundling pass_through);
 
-
 my $trinotate_conf_file = "$FindBin::Bin/conf.txt";
 
 my $usage = <<__EOUSAGE__;
@@ -59,7 +58,11 @@ $ENV{PATH} .= ":$trinity_dir";  ## adding it to our PATH setting.
 my $trinotate_dir = $ENV{TRINOTATE_HOME} or die "Error, need env var TRINOTATE_HOME set to Trinotate installation directory (note this is different than Trinity) ";
 
 unless ($ENV{TRANSDECODER_HOME}) {
-    die "Error, must set env var TRANSDECODER_HOME ";
+    $ENV{TRANSDECODER_HOME} = "$ENV{HOME}/GITHUB/TransDecoder";
+}
+
+if (! -d "$ENV{TRANSDECODER_HOME}") {
+    die "Error, cannot locate TransDecoder dir at  env var setting:  $ENV{TRANSDECODER_HOME} ";
 }
 $ENV{PATH} = "$trinity_dir/trinity-plugins/BIN/:$ENV{TRANSDECODER_HOME}:$ENV{PATH}";
 
@@ -128,14 +131,14 @@ my $run_Trinity_cmd = "$trinity_dir/Trinity --seqType fq "
 ## representation of reads by the assembly
 &process_cmd("bowtie2-build trinity_out_dir/Trinity.fasta trinity_out_dir/Trinity.fasta", "$checkpoints_dir/bowtie2_build_read_assess.ok");
 
-&process_cmd("bowtie2 --local --no-unal -x trinity_out_dir/Trinity.fasta -q -1 data/wt_SRR1582651_1.fastq -2 data/wt_SRR1582651_2.fastq | samtools view -Sb - | samtools sort -o - - > bowtie2.nameSorted.bam", "$checkpoints_dir/bowtie2_align_reads_assess.ok");
+&process_cmd("bowtie2 --local --no-unal -x trinity_out_dir/Trinity.fasta -q -1 data/wt_SRR1582651_1.fastq -2 data/wt_SRR1582651_2.fastq | samtools view -Sb - | samtools sort -o - - > bowtie2.bam", "$checkpoints_dir/bowtie2_align_reads_assessss.ok");
 
 
 ## Examine read alignments in IGV
 
-&process_cmd("samtools index bowtie2.nameSorted.bam", "$checkpoints_dir/idx_bowtie_alignments.ok");
+&process_cmd("samtools index bowtie2.bam", "$checkpoints_dir/idx_bowtie_alignments.ok");
 
-my $igv_cmd = "igv.sh -g trinity_out_dir/Trinity.fasta bowtie2.nameSorted.bam";
+my $igv_cmd = "igv.sh -g trinity_out_dir/Trinity.fasta bowtie2.bam";
 if ($AUTO_MODE) {
     $igv_cmd .= " & ";
 }
@@ -146,6 +149,8 @@ if ($AUTO_MODE) {
 ## assess number of full-length transcripts
 
 &process_cmd("blastx -query trinity_out_dir/Trinity.fasta -db data/mini_sprot.pep -out blastx.outfmt6 -evalue 1e-20 -num_threads 2 -max_target_seqs 1 -outfmt 6", "$checkpoints_dir/blastx_for_full_length.ok");
+
+&process_cmd("head blastx.outfmt6 | column -t", "$checkpoints_dir/check_blast_output.ok");
 
 &process_cmd("$trinity_dir/util/analyze_blastPlus_topHit_coverage.pl blastx.outfmt6 trinity_out_dir/Trinity.fasta data/mini_sprot.pep", "$checkpoints_dir/tophat_blast_cov_stats.ok");
 
@@ -182,9 +187,9 @@ my $make_matrix_cmd = "$trinity_dir/util/abundance_estimates_to_matrix.pl --est_
 
 
 # look at the output
-&process_cmd("head  Trinity.isoform.counts.matrix", "$checkpoints_dir/head.trinity_isoform_counts.ok");
+&process_cmd("head  Trinity.isoform.counts.matrix | column -t ", "$checkpoints_dir/head.trinity_isoform_counts.ok");
 
-&process_cmd("head Trinity.isoform.TMM.EXPR.matrix", "$checkpoints_dir/head.trinity_expr.ok");
+&process_cmd("head Trinity.isoform.TMM.EXPR.matrix | column -t", "$checkpoints_dir/head.trinity_expr.ok");
 
 
 ## Examine the E90N50 statistic

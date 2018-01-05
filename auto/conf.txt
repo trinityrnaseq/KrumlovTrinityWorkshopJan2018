@@ -17,8 +17,8 @@ TMHMM_PROG=tmhmm
 
 # dbs
 SWISSPROT_PEP=../data/mini_sprot.pep
-PFAM_DB=../../trinotate_databases/Pfam-A.hmm
-TRINOTATE_BOILERPLATE=../../trinotate_databases/Trinotate.sqlite
+PFAM_DB=../data/trinotate_data/Pfam-A.hmm
+TRINOTATE_BOILERPLATE=../data/trinotate_data/Trinotate.boilerplate.sqlite
 
 
 ####################
@@ -67,7 +67,7 @@ CMD=hmmscan --cpu {__CPU__} --domtblout TrinotatePFAM.out {__PFAM_DB__} Trinity.
 
 [SIGNALP]
 RANK=500
-RUN=T
+RUN=F
 CMD={__SIGNALP_PROG__} -f short -n signalp.out Trinity.fasta.transdecoder.pep > sigP.log
 
 
@@ -124,7 +124,7 @@ CMD={__TRINOTATE_HOME__}/Trinotate  Trinotate.sqlite LOAD_tmhmm tmhmm.out
 
 [TRINOTATE_LOAD_SIGNALP]
 RANK=1700
-RUN=T
+RUN=F
 CMD={__TRINOTATE_HOME__}/Trinotate  Trinotate.sqlite LOAD_signalp signalp.out
 
 [TRINOTATE_REPORT]
