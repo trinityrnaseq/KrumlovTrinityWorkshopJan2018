@@ -28,7 +28,6 @@ for my $char (@alphabet) {
 }
 
 
-#  https://tinyurl.com/yd6o7hqa
 my $num_digits = int(log(scalar(@alphabet))/log(2) + 1);
 if ($num_digits % 2 != 0) {
     $num_digits++;
