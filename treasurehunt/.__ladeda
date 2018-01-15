@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -ev
+
+$TRINITY_HOME/Trinity --seqType fq --left treasure_1.fq --right treasure_2.fq --max_memory 1G --CPU 1
+
+./trinity_msg_decoder ./trinity_out_dir/Trinity.fasta
