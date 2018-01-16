@@ -79,6 +79,7 @@ sub decode_fasta {
             if ($seq) {
                 my $msg = &decode_seq($seq);
                 $decoded_msg .= $msg if $msg;
+                
                 $seq = "";
             }
         }
@@ -90,10 +91,23 @@ sub decode_fasta {
     if ($seq) {
         my $msg = &decode_seq($seq);
         $decoded_msg .= $msg if $msg;
+
+        $msg = &decode_seq(&reverse_complement($seq));
+        $decoded_msg .= $msg if $msg;
+                
     }
 
     return $decoded_msg;
 
+}
+
+####
+sub reverse_complement {
+    my ($seq) = @_;
+    
+    my $rc = reverse ($seq);
+    $rc =~tr/ACGTacgtyrkmYRKM/TGCAtgcarymkRYMK/;
+    return($rc);
 }
 
 
