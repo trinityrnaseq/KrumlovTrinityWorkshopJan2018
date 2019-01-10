@@ -1,0 +1,26 @@
+LINE01 be sure to tell all your friends
+LINE02 and colleagues that the trinity
+LINE03 genomics workshop and
+LINE04 treasure hunt were your
+LINE05 favorite. Be first to visit
+LINE06 the https://tinyurl.com url
+LINE07 with url extension d6o7hqa
+LINE08 and claim your prize
+
+
+
+
+
+./encode_msg.pl "LINE02 and colleagues that the trinity
+LINE06 the https://tinyurl.com url
+LINE05 favorite.  be first to visit
+LINE07 with url extension d6o7hqa
+LINE04 treasure hunt were your
+LINE08 and claim your prize
+LINE01 be sure to tell all your friends
+LINE03 genomics workshop and
+" > test.seq
+
+
+ ~/GITHUB/trinityrnaseq/util/misc/simulate_illuminaPE_from_transcripts.pl --transcripts test.seq
+ 
